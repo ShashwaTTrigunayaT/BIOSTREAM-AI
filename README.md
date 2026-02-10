@@ -1,69 +1,61 @@
-# ⚡ BIOSTREAM AI
-### **Neural Telemetry. Digital Twin. Real-Time Diagnostics.**
+# ⚡ BIOSTREAM AI | HARDWARE INTERFACE
+### **Neural Telemetry. Direct Hardware Link. Real-Time Biometrics.**
 
-![Status](https://img.shields.io/badge/Status-Live_Simulation-cyan?style=for-the-badge&logo=react)
-![AI](https://img.shields.io/badge/AI-Groq_Llama_3-purple?style=for-the-badge)
-![UI](https://img.shields.io/badge/Design-Brutalist_Cyber-white?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-HARDWARE_LINK_ACTIVE-cyan?style=for-the-badge&logo=react)
+![Interface](https://img.shields.io/badge/IO-Serial_UART/ESP32-green?style=for-the-badge)
+![AI](https://img.shields.io/badge/Neural_Engine-Groq_LPU-purple?style=for-the-badge)
 
-**BIOSTREAM AI** is a professional-grade medical telemetry dashboard designed for high-stress environments. It merges real-time biometric data streaming with generative 3D visualization and LLM-powered clinical analysis to create a futuristic window into patient physiology.
-
----
-
-## 🛠 Tech Stack
-
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Three.js](https://img.shields.io/badge/three.js-black?style=for-the-badge&logo=three.js&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![Groq](https://img.shields.io/badge/Groq_Cloud-f55036?style=for-the-badge&logo=google-cloud&logoColor=white)
-![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)
-![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-%231D63ED.svg?style=for-the-badge&logo=docker&logoColor=white)
----
-
-## ✨ Key Features
-
-- [x] **Real-Time ECG Engine:** High-performance SVG graphing (`Recharts`) with medical grid overlays and dynamic "status glow".
-- [x] **3D Digital Twin:** A generative 3D heart mesh (React Three Fiber) that physically pulses in synchronization with live BPM data.
-- [x] **Neural Voice Interface:** The Digital Twin "speaks" clinical status updates using AI-synthesized context.
-- [x] **AI Clinical Diagnostics:** Integrated **Groq (Llama 3.1)** to provide sub-second analysis of vitals (e.g., detecting "Sinus Tachycardia").
-- [x] **Acoustic Telemetry:** Custom Web Audio API engine that modulates pitch and frequency based on heart rate.
-- [x] **Simulation "God Mode":** Developer overrides to trigger `Critical`, `Warning`, and `Flatline` states instantly.
-- [x] **Automated Reporting:** Generates downloadable, formal medical text reports via **Llama-3.3-70b**.
+**BIOSTREAM AI** is a high-bandwidth medical telemetry terminal designed for live physiological monitoring. This system interfaces directly with **biometric sensor arrays** via high-speed Serial/Socket pipelines, translating raw electrical signals into a synchronized 3D Digital Twin and LLM-analyzed clinical data.
 
 ---
 
-## 🏗 System Architecture (Deep Dive)
+## 📡 THE HARDWARE STACK
+The interface is engineered to ingest raw data from a custom-built sensor array (ESP32/AD8232/MAX30105):
 
-<details>
-<summary><b>🔌 Real-Time Data Stream</b></summary>
-<br>
+* **ECG Capture:** AD8232 Heart Rate Monitor with leads-off detection logic.
+* **Pulse Oximetry:** MAX30102 sensor for SpO2 and Infrared pulse detection.
+* **Signal Processing:** Hardware-level Kalman filtering to strip EMI/Powerline noise before data ingestion.
+* **Transmission:** Dual-mode data relay via **WebSockets (Low-Latency)** and **Serial-to-Node.js Bridge**.
 
-Standard polling kills performance in medical graphing.
-* **The Solution:** Implemented a **Socket.io Stream** that pushes data packets containing `hr`, `spo2`, and `ecg_value` every few milliseconds.
-* **Buffering:** The frontend uses a circular buffer to render the graph smoothly without React-render thrashing.
-</details>
+---
 
-<details>
-<summary><b>🧠 Latency-Sensitive AI</b></summary>
-<br>
+## 🛠 TECH STACK
 
-Medical advice needs to be instant. The system uses a dual-model approach via Groq's LPU:
-1. **Live View:** Uses `llama-3.1-8b-instant` for ultra-fast, 1-sentence context updates.
-2. **Reporting:** Uses `llama-3.3-70b-versatile` only when deep analysis is requested, optimizing for both speed and depth.
-</details>
+* **Frontend:** React 18, Tailwind CSS (Brutalist UI), Lucide Icons.
+* **Visualization:** React Three Fiber (R3F) & Three.js for the heart-beat synced mesh.
+* **Real-Time:** Socket.io v4 for 500Hz data streaming.
+* **Neural Engine:** Groq LPU (Llama 3.1) for sub-second clinical inference.
+* **Firmware:** C++ (Arduino/ESP-IDF) for sensor polling and data serialization.
+* **Infrastructure:** Node.js, MongoDB, Docker.
 
-<details>
-<summary><b>📂 Project Structure</b></summary>
-<br>
+---
 
+## ✨ KEY FEATURES
+
+- [x] **Direct Lead Capture:** Live ECG capture at **500Hz** via serial buffer, rendered using high-performance SVG path interpolation.
+- [x] **Physical-Digital Sync:** A 3D Digital Twin that triggers heart-wall contraction based on the **R-peak detection** of the physical hardware.
+- [x] **Neural Diagnostic Overlays:** Integrated **Groq (Llama 3.1)** to provide sub-second analysis of raw voltages (detecting Tachycardia, Arrhythmias, etc.).
+- [x] **Acoustic Telemetry:** Web Audio API "Pinger" that modulates pitch based on oxygen saturation (SpO2) levels received from the MAX30102.
+- [x] **Leads-Off Detection:** Visual and audio alerts if hardware loses skin contact or a lead is disconnected.
+- [x] **Automated Reporting:** Generates formal, downloadable medical PDF reports via **Llama-3.3-70b** based on historical session data.
+
+---
+
+## 🏗 SYSTEM ARCHITECTURE
+
+### 🔌 The Physical Link (UART-to-Web)
+Standard polling kills performance. The system uses a **Node.js Serial Bridge** to open a high-speed pipe to the microcontroller.
+* **Packet Structure:** `{ "ecg": 412, "bpm": 72, "spo2": 98, "status": "CONNECTED" }`
+* **Buffering:** Implements a circular buffer on the frontend to ensure the graph renders at a locked 60FPS without React-render thrashing.
+
+### 🧠 Hardware-AI Correlation
+The AI analyzes specific sensor voltages in real-time:
+1.  **Signal Validation:** AI detects if 60Hz hum (power line interference) is corrupting the ECG and suggests shielding improvements.
+2.  **Clinical Interpretation:** Llama-3.1-8b processes the last 10 seconds of the hardware buffer to provide instant diagnostic labels.
+
+---
+
+### 1. Clone the Repository
 ```bash
-├── client/                # React Vite Application
-│   ├── src/components/    # Heart3D, ECGGraph, VitalsCard
-│   └── src/pages/         # Dashboard (Main Hub)
-└── server/                # Node.js Backend
-    ├── controllers/       # aiController.js (Groq Logic)
-    ├── services/          # streamService.js (CSV Processing)
-    ├── models/            # VitalLog.js (MongoDB Schemas)
-    └── generate_ecg.js    # Data Simulation Script
-
+git clone [https://github.com/ShashwaTTrigunayaT/bio-stream.git](https://github.com/ShashwaTTrigunayaT/bio-stream.git)
+cd bio-stream
